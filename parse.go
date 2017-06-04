@@ -2,6 +2,7 @@ package xmaintnote
 
 import (
   "io"
+  "fmt"
 )
 
 // MaintNote represents a Maintnance Notification
@@ -17,5 +18,6 @@ func NewMaintNote() *MaintNote {
 
 // ParseMaintNote parses a Maintenence Notification from a reader
 func ParseMaintNote(r io.Reader) (mn *MaintNote, err error) {
+  err = fmt.Errorf("NOT IMPLEMENTED YET")
   return nil, nil
 }
