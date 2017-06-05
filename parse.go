@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/jda/ical"
+	"github.com/luxifer/ical"
 )
 
 type MaintNote struct {
