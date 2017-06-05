@@ -41,3 +41,45 @@ const StatusInProcess string = "IN-PROCESS"
 
 // StatusCompleted represents the MAINTNOTE COMPLETED status
 const StatusCompleted string = "COMPLETED"
+
+// ValidStatus checks if a status value is a valid X-MAINTNOTE status
+func ValidStatus(status string) bool {
+	if status == StatusTenative {
+		return true
+	}
+
+	if status == StatusCancelled {
+		return true
+	}
+
+	if status == StatusInProcess {
+		return true
+	}
+
+	if status == StatusCompleted {
+		return true
+	}
+
+	return false
+}
+
+// ValidImpact checks if a status value is a valid X-MAINTNOTE impact
+func ValidImpact(impact string) bool {
+	if impact == ImpactNone {
+		return true
+	}
+
+	if impact == ImpactReducedRedundancy {
+		return true
+	}
+
+	if impact == ImpactDegraded {
+		return true
+	}
+
+	if impact == ImpactOutage {
+		return true
+	}
+
+	return false
+}
