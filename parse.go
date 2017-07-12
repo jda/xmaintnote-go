@@ -43,10 +43,16 @@ type MaintEvent struct {
 	Provider       string
 	Account        string
 	MaintenanceID  string
-	ObjectID       string // CircuitID
+	Objects        []MaintObject
 	Impact         string
 	Status         string
 	OrganizerEmail string
+}
+
+// MaintObject represents the item that is the subject of the maintenence event
+type MaintObject struct {
+	Name string // Name of maintenence object
+	Data string // Alternate Representation (URI or other data) of object
 }
 
 // IsValid checks if a MaintEvent represents a valid MaintEvent
@@ -72,6 +78,30 @@ func (me *MaintEvent) IsValid() (valid bool, err error) {
 
 	if me.OrganizerEmail == "" {
 		return false, fmt.Errorf("no organizer email")
+	}
+
+	if me.Provider == "" {
+		return false, fmt.Errorf("no provider")
+	}
+
+	if me.Account == "" {
+		return false, fmt.Errorf("no account")
+	}
+
+	if me.MaintenanceID == "" {
+		return false, fmt.Errorf("no maintenence ID")
+	}
+
+	if !ValidImpact(me.Impact) {
+		return false, fmt.Errorf("invalid impact")
+	}
+
+	if !ValidStatus(me.Status) {
+		return false, fmt.Errorf("invalid status")
+	}
+
+	if len(me.Objects) < 1 {
+		return false, fmt.Errorf("no maintenance objects")
 	}
 
 	return true, nil
@@ -111,7 +141,7 @@ func ParseCalendar(ic ical.Calendar) (mn MaintNote, err error) {
 	// process events
 	numEvents := len(ic.Events)
 	// need at least one event
-	if numEvents <= 1 {
+	if numEvents < 1 {
 		return mn, errors.New(ErrEmptyCalendar)
 	}
 
@@ -138,7 +168,6 @@ func ParseCalendar(ic ical.Calendar) (mn MaintNote, err error) {
 
 // ParseEvent loads maintenence event from a ical.Event
 func ParseEvent(ie ical.Event) (me MaintEvent, err error) {
-	fmt.Printf("Parsing event: %+v\n", ie)
 	me = MaintEvent{
 		Summary: ie.Summary,
 		Start:   ie.StartDate,
@@ -160,16 +189,36 @@ func ParseEvent(ie ical.Event) (me MaintEvent, err error) {
 		}
 	}
 
+	me.Objects = getMaintObjects(ie.Properties)
+
 	me.Provider = getPropVal(ie.Properties, maintProvider)
 	me.Account = getPropVal(ie.Properties, maintAccount)
 	me.MaintenanceID = getPropVal(ie.Properties, maintMaintID)
-	me.ObjectID = getPropVal(ie.Properties, maintObjectID)
 	me.Impact = getPropVal(ie.Properties, maintImpact)
 	me.Status = getPropVal(ie.Properties, maintStatus)
-	printProp(ie.Properties)
-	fmt.Printf("Got event: %+v\n", me)
+
 	_, err = me.IsValid()
 	return me, err
+}
+
+func getMaintObjects(p []*ical.Property) (mo []MaintObject) {
+	mo = []MaintObject{}
+	for _, prop := range p {
+		if prop.Name == maintObjectID {
+			m := MaintObject{
+				Name: prop.Value,
+			}
+
+			if val, ok := prop.Params["ALTREP"]; ok {
+				if len(val.Values) == 1 {
+					m.Data = val.Values[0]
+				}
+			}
+
+			mo = append(mo, m)
+		}
+	}
+	return mo
 }
 
 func getPropVal(p []*ical.Property, name string) string {
@@ -179,28 +228,4 @@ func getPropVal(p []*ical.Property, name string) string {
 		}
 	}
 	return ""
-}
-func parseIcal(r io.Reader) error {
-	calendar, err := ical.Parse(r)
-	if err != nil {
-		return err
-	}
-
-	fmt.Printf("Cal: %+v\n", calendar)
-	printProp(calendar.Properties)
-	printEvent(calendar.Events)
-	return nil
-}
-
-func printProp(props []*ical.Property) {
-	for p := range props {
-		fmt.Printf("\tGot prop: %+v\n", props[p])
-	}
-}
-
-func printEvent(events []*ical.Event) {
-	for e := range events {
-		fmt.Println("events!")
-		printProp(events[e].Properties)
-	}
 }

@@ -29,6 +29,8 @@ X-MAINTNOTE-ACCOUNT:137.035999173
 X-MAINTNOTE-MAINTENANCE-ID:WorkOrder-31418
 X-MAINTNOTE-OBJECT-ID;ALTREP="https://example.org/maintenance?id=acme-widg
  ets-as-a-service":acme-widgets-as-a-service
+X-MAINTNOTE-OBJECT-ID:acme-widgets-as-a-service-ng
+X-MAINTNOTE-OBJECT-ID;ALTREP="T12345":AM-N4342
 X-MAINTNOTE-IMPACT:NO-IMPACT
 X-MAINTNOTE-STATUS:TENTATIVE
 ORGANIZER;CN="Example NOC":mailto:noone@example.com

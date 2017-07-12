@@ -35,7 +35,7 @@ const ImpactOutage string = "OUTAGE"
 //
 
 // StatusTenative represents the MAINTNOTE TENATIVE status
-const StatusTenative string = "TENATIVE"
+const StatusTenative string = "TENTATIVE"
 
 // StatusCancelled represents the MAINTNOTE CANCELLED status
 const StatusCancelled string = "CANCELLED"
