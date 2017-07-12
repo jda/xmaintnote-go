@@ -3,6 +3,8 @@ package xmaintnote
 import (
 	"os"
 	"testing"
+
+	"github.com/luxifer/ical"
 )
 
 // Test parsing the maint note standard example ical
@@ -77,5 +79,28 @@ func TestValidStatus(t *testing.T) {
 func TestInvalidStatus(t *testing.T) {
 	if ValidStatus("examplebad") {
 		t.Errorf("invalid status allowed")
+	}
+}
+
+var propVals = []*ical.Property{
+	&ical.Property{
+		Name:  "hello",
+		Value: "world",
+	},
+}
+
+func TestGetPropValOK(t *testing.T) {
+	want := "world"
+	pval := getPropVal(propVals, "hello")
+	if pval != want {
+		t.Errorf("Expected val `%s`, got `%s`", want, pval)
+	}
+}
+
+func TestGetPropValNo(t *testing.T) {
+	want := ""
+	pval := getPropVal(propVals, "spamalot")
+	if pval != want {
+		t.Errorf("Expected val `%s`, got `%s`", want, pval)
 	}
 }
