@@ -4,6 +4,8 @@
 // Maintenance BCOP: https://www.facebook.com/groups/855738444449323/
 package xmaintnote
 
+import "time"
+
 //
 // MaintNote fields
 //
@@ -45,6 +47,44 @@ const StatusInProcess string = "IN-PROCESS"
 
 // StatusCompleted represents the MAINTNOTE COMPLETED status
 const StatusCompleted string = "COMPLETED"
+
+// MaintNote represents a maintenance notice containing one or more
+// maintnence events
+type MaintNote struct {
+	CalProdID  string // iCal product ID
+	CalVersion string // iCal version
+	CalMethod  string // iCal method
+	Events     []MaintEvent
+}
+
+// NewMaintNote creates a new MaintNote instance
+func NewMaintNote() *MaintNote {
+	mn := MaintNote{}
+	return &mn
+}
+
+// MaintEvent represents a single maintenence event
+type MaintEvent struct {
+	Summary        string
+	Start          time.Time
+	End            time.Time
+	Created        time.Time
+	UID            string
+	Sequence       int
+	Provider       string
+	Account        string
+	MaintenanceID  string
+	Objects        []MaintObject
+	Impact         string
+	Status         string
+	OrganizerEmail string
+}
+
+// MaintObject represents the item that is the subject of the maintenence event
+type MaintObject struct {
+	Name string // Name of maintenence object
+	Data string // Alternate Representation (URI or other data) of object
+}
 
 // ValidStatus checks if a status value is a valid X-MAINTNOTE status
 func ValidStatus(status string) bool {

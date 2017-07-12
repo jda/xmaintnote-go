@@ -6,7 +6,6 @@ import (
 	"io"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/luxifer/ical"
 )
@@ -22,38 +21,6 @@ const ErrNotAMaintEvent string = "not a valid maintenence event"
 // ErrNoMaintEvents is the error code for when no maintenence events were found
 // in the calendar
 const ErrNoMaintEvents string = "no maintenence events in calendar"
-
-// MaintNote represents a maintenance notice containing one or more
-// maintnence events
-type MaintNote struct {
-	CalProdID  string // iCal product ID
-	CalVersion string // iCal version
-	CalMethod  string // iCal method
-	Events     []MaintEvent
-}
-
-// MaintEvent represents a single maintenence event
-type MaintEvent struct {
-	Summary        string
-	Start          time.Time
-	End            time.Time
-	Created        time.Time
-	UID            string
-	Sequence       int
-	Provider       string
-	Account        string
-	MaintenanceID  string
-	Objects        []MaintObject
-	Impact         string
-	Status         string
-	OrganizerEmail string
-}
-
-// MaintObject represents the item that is the subject of the maintenence event
-type MaintObject struct {
-	Name string // Name of maintenence object
-	Data string // Alternate Representation (URI or other data) of object
-}
 
 // IsValid checks if a MaintEvent represents a valid MaintEvent
 // e.g. Has all required properties & those properties have valid values
@@ -105,12 +72,6 @@ func (me *MaintEvent) IsValid() (valid bool, err error) {
 	}
 
 	return true, nil
-}
-
-// NewMaintNote creates a new MaintNote instance
-func NewMaintNote() *MaintNote {
-	mn := MaintNote{}
-	return &mn
 }
 
 // ParseMaintNote parses Maintenence Notification events from a reader
