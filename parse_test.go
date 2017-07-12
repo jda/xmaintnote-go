@@ -20,6 +20,20 @@ func TestParseMaintNoteExample(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestParseMultiMaintNoteExample(t *testing.T) {
+	fname := "testdata/maint-note-multi-example.ical"
+	f, err := os.Open(fname)
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = ParseMaintNote(f)
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 func TestValidImpact(t *testing.T) {
 	vars := map[string]bool{
 		"invalidstatus":         false,

@@ -1,3 +1,7 @@
+// Package xmaintnote parses and generates Maintenence BCOP-formatted
+// iCalendar files to aid in coordinating network maintenence.
+//
+// Maintenance BCOP: https://www.facebook.com/groups/855738444449323/
 package xmaintnote
 
 //
