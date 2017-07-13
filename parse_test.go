@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/luxifer/ical"
 )
 
@@ -17,7 +18,10 @@ func TestParseMaintNoteExample(t *testing.T) {
 		t.Error(err)
 	}
 
-	_, err = ParseMaintNote(f)
+	mn, err := ParseMaintNote(f)
+	if testing.Verbose() {
+		spew.Dump(mn)
+	}
 	if err != nil {
 		t.Error(err)
 	}
@@ -30,7 +34,10 @@ func TestParseMultiMaintNoteExample(t *testing.T) {
 		t.Error(err)
 	}
 
-	_, err = ParseMaintNote(f)
+	mn, err := ParseMaintNote(f)
+	if testing.Verbose() {
+		spew.Dump(mn)
+	}
 	if err != nil {
 		t.Error(err)
 	}

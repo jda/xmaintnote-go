@@ -86,7 +86,6 @@ func ParseMaintNote(r io.Reader) (mn MaintNote, err error) {
 		return mn, err
 	}
 
-	fmt.Printf("MaintNote: %+v\n", mn)
 	return mn, err
 }
 
