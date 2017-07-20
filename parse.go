@@ -2,7 +2,6 @@ package xmaintnote
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -15,66 +14,14 @@ import (
 const ErrEmptyCalendar string = "no events found in calendar"
 
 // ErrNotAMaintEvent is the error code for events that are not valid
-// maintenence events
-const ErrNotAMaintEvent string = "not a valid maintenence event"
+// maintenance events
+const ErrNotAMaintEvent string = "not a valid maintenance event"
 
-// ErrNoMaintEvents is the error code for when no maintenence events were found
+// ErrNoMaintEvents is the error code for when no maintenance events were found
 // in the calendar
-const ErrNoMaintEvents string = "no maintenence events in calendar"
+const ErrNoMaintEvents string = "no maintenance events in calendar"
 
-// IsValid checks if a MaintEvent represents a valid MaintEvent
-// e.g. Has all required properties & those properties have valid values
-func (me *MaintEvent) IsValid() (valid bool, err error) {
-	if me.Start.IsZero() {
-		return false, fmt.Errorf("no start time")
-	}
-	if me.End.IsZero() {
-		return false, fmt.Errorf("no end time")
-	}
-	if me.Created.IsZero() {
-		return false, fmt.Errorf("no creation timestamp")
-	}
-
-	if me.UID == "" {
-		return false, fmt.Errorf("no UID")
-	}
-
-	if me.Summary == "" {
-		return false, fmt.Errorf("no summary")
-	}
-
-	if me.OrganizerEmail == "" {
-		return false, fmt.Errorf("no organizer email")
-	}
-
-	if me.Provider == "" {
-		return false, fmt.Errorf("no provider")
-	}
-
-	if me.Account == "" {
-		return false, fmt.Errorf("no account")
-	}
-
-	if me.MaintenanceID == "" {
-		return false, fmt.Errorf("no maintenence ID")
-	}
-
-	if !ValidImpact(me.Impact) {
-		return false, fmt.Errorf("invalid impact")
-	}
-
-	if !ValidStatus(me.Status) {
-		return false, fmt.Errorf("invalid status")
-	}
-
-	if len(me.Objects) < 1 {
-		return false, fmt.Errorf("no maintenance objects")
-	}
-
-	return true, nil
-}
-
-// ParseMaintNote parses Maintenence Notification events from a reader
+// ParseMaintNote parses Maintenance Notification events from a reader
 func ParseMaintNote(r io.Reader) (mn MaintNote, err error) {
 	calendar, err := ical.Parse(r)
 	if err != nil {
@@ -126,7 +73,7 @@ func ParseCalendar(ic ical.Calendar) (mn MaintNote, err error) {
 	return mn, err
 }
 
-// ParseEvent loads maintenence event from a ical.Event
+// ParseEvent loads maintenance event from a ical.Event
 func ParseEvent(ie ical.Event) (me MaintEvent, err error) {
 	me = MaintEvent{
 		Summary: ie.Summary,

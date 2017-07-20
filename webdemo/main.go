@@ -18,7 +18,7 @@ var parseHTML = `<html><head><title>xmaintnote parse</title></head><body>
 <tr><th>Summary</th><td>{{.Summary}}</td></tr>
 <tr><th>Provider</th><td>{{.Provider}}</td></tr>
 <tr><th>Account</th><td>{{.Account}}</td></tr>
-<tr><th>Maintenence ID</th><td>{{.MaintenanceID}}</td></tr>
+<tr><th>Maintenance ID</th><td>{{.MaintenanceID}}</td></tr>
 <tr><th>Sequence</th><td>{{.Sequence}}</td></tr>
 <tr><th>Organizer Email</th><td>{{.OrganizerEmail}}</td></tr>
 <tr><th>Impact</th><td>{{.Impact}}</td></tr>
