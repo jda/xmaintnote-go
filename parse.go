@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/jda/xmaintnote-go/icalutils"
 	"github.com/luxifer/ical"
 )
 
@@ -83,12 +84,12 @@ func ParseEvent(ie ical.Event) (me MaintEvent, err error) {
 		UID:     ie.UID,
 	}
 
-	rawOrgEmail := getPropVal(ie.Properties, "ORGANIZER")
+	rawOrgEmail := icalutils.GetPropVal(ie.Properties, "ORGANIZER")
 	if rawOrgEmail != "" {
 		me.OrganizerEmail = strings.Replace(rawOrgEmail, "mailto:", "", 1)
 	}
 
-	rawSequence := getPropVal(ie.Properties, "SEQUENCE")
+	rawSequence := icalutils.GetPropVal(ie.Properties, "SEQUENCE")
 	if rawSequence != "" {
 		me.Sequence, err = strconv.Atoi(rawSequence)
 		if err != nil {
@@ -98,11 +99,11 @@ func ParseEvent(ie ical.Event) (me MaintEvent, err error) {
 
 	me.Objects = getMaintObjects(ie.Properties)
 
-	me.Provider = getPropVal(ie.Properties, maintProvider)
-	me.Account = getPropVal(ie.Properties, maintAccount)
-	me.MaintenanceID = getPropVal(ie.Properties, maintMaintID)
-	me.Impact = getPropVal(ie.Properties, maintImpact)
-	me.Status = getPropVal(ie.Properties, maintStatus)
+	me.Provider = icalutils.GetPropVal(ie.Properties, maintProvider)
+	me.Account = icalutils.GetPropVal(ie.Properties, maintAccount)
+	me.MaintenanceID = icalutils.GetPropVal(ie.Properties, maintMaintID)
+	me.Impact = icalutils.GetPropVal(ie.Properties, maintImpact)
+	me.Status = icalutils.GetPropVal(ie.Properties, maintStatus)
 
 	_, err = me.IsValid()
 	return me, err
@@ -126,13 +127,4 @@ func getMaintObjects(p []*ical.Property) (mo []MaintObject) {
 		}
 	}
 	return mo
-}
-
-func getPropVal(p []*ical.Property, name string) string {
-	for _, prop := range p {
-		if name == prop.Name {
-			return prop.Value
-		}
-	}
-	return ""
 }
