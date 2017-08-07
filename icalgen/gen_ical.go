@@ -16,7 +16,7 @@ import (
 // TODO clean up, properly implement RFC, then upstream
 
 // Export exports a ical.Calendar in ical format as a byte array
-func Export(c *ical.Calendar) (out []byte, err error) {
+func Export(c *ical.Calendar) (out []byte) {
 	out = append(out, "BEGIN:VCALENDAR\r\n"...)
 
 	version := icu.GetPropVal(c.Properties, "VERSION")
@@ -62,10 +62,7 @@ func Export(c *ical.Calendar) (out []byte, err error) {
 			out = append(out, fmt.Sprintf("SEQUENCE:%s\r\n", sequence)...)
 		}
 
-		organizer, err := getFormatOrganizer(event)
-		if err != nil {
-			return out, err
-		}
+		organizer := getFormatOrganizer(event)
 		if organizer != "" {
 			out = append(out, fmt.Sprintf("%s\r\n", organizer)...)
 		}
@@ -77,7 +74,7 @@ func Export(c *ical.Calendar) (out []byte, err error) {
 	}
 
 	out = append(out, "END:VCALENDAR\r\n"...)
-	return out, nil
+	return out
 }
 
 func genXProperties(e *ical.Event) (seq []byte) {
@@ -100,7 +97,7 @@ func genXProperties(e *ical.Event) (seq []byte) {
 	return seq
 }
 
-func getFormatOrganizer(e *ical.Event) (fo string, err error) {
+func getFormatOrganizer(e *ical.Event) (fo string) {
 	for pi := range e.Properties {
 		if e.Properties[pi].Name != "ORGANIZER" {
 			continue
@@ -115,7 +112,7 @@ func getFormatOrganizer(e *ical.Event) (fo string, err error) {
 		}
 		email := pr.Value
 		fo += fmt.Sprintf(":%s", email)
-		return fo, nil
+		return fo
 	}
-	return fo, nil
+	return fo
 }

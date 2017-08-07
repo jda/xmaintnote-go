@@ -66,10 +66,7 @@ func doTestCase(t *testing.T, testCase string) {
 	}
 
 	// test output
-	outIcal, err := Export(inIcal)
-	if err != nil {
-		t.Fatalf("ical export error in test: %s", err)
-	}
+	outIcal := Export(inIcal)
 
 	// parse results from output and compare to origional parse
 	generatedIcalReader := bytes.NewReader(outIcal)
