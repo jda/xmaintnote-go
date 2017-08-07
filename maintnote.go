@@ -6,6 +6,7 @@ package xmaintnote
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -63,9 +64,11 @@ type MaintNote struct {
 // NewMaintNote creates a new MaintNote instance
 func NewMaintNote() *MaintNote {
 	mn := MaintNote{
-		CalProdID:  "-//Maint Note//https://github.com/maint-notification//",
 		CalVersion: "2.0",
 	}
+
+	mn.CalProdID = fmt.Sprintf("-//Maint Note//%s//", reflect.TypeOf(mn).PkgPath())
+
 	return &mn
 }
 
