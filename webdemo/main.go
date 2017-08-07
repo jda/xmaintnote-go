@@ -57,14 +57,16 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
 	infile, header, err := r.FormFile("fname")
 	if err != nil {
-		http.Error(w, "Error parsing uploaded file: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, "Error fetching uploaded file: "+err.Error(), http.StatusBadRequest)
 		glog.Infof("%s: %s", header.Filename, infile)
 		return
 	}
 
 	mn, err := xmaintnote.ParseMaintNote(infile)
 	if err != nil {
+		http.Error(w, "Error parsing uploaded file: "+err.Error(), http.StatusBadRequest)
 		glog.Errorf("could not parse uploaded file `%s`", header.Filename)
+		return
 	}
 
 	err = parseTmpl.Execute(w, mn)
@@ -94,11 +96,17 @@ func nothingHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	addr := flag.String("http", "[::1]:8085", "listen on this intf/port")
+	addr := flag.String("http", ":8080", "listen on this intf/port")
 	flag.Parse()
+
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/_ah/health", healthCheckHandler)
 	http.HandleFunc("/favicon.ico", nothingHandler)
 
 	glog.Infof("Listening for requests on %s", *addr)
 	glog.Fatal(http.ListenAndServe(*addr, nil))
+}
+
+func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "ok")
 }
