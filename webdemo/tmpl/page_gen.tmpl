@@ -1,0 +1,92 @@
+{{ define "title"}}Make a xmaintnote file{{ end }}
+{{ define "content" }}
+<h1>Generate a xmaintnote ical file</h1>
+{{ if .Error }}
+<div class="alert alert-danger" role="alert">
+<h4 class="alert-heading">Parse Error</h4>
+{{ .Error }}
+</div>
+{{ end }}
+<p>
+<form method="POST" method="/gen">
+  <div class="form-group row">
+    <label for="summary" class="col-sm-2 col-form-label">Summary</label>
+    <div class="col-sm-10">
+      <input name="summary" type="text" class="form-control" id="summary" placeholder="Summary of maintenance"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="provider" class="col-sm-2 col-form-label">Provider</label>
+    <div class="col-sm-10">
+      <input name="provider" type="text" class="form-control" id="provider" placeholder="Provider name"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="account" class="col-sm-2 col-form-label">Account</label>
+    <div class="col-sm-10">
+      <input name="account" type="text" class="form-control" id="account" placeholder="Account identifier"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="maintid" class="col-sm-2 col-form-label">Maintenance ID</label>
+    <div class="col-sm-10">
+      <input name="maintid" type="text" class="form-control" id="Maintenance" placeholder="Maintenance identifier"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="sequence" class="col-sm-2 col-form-label">Sequence number</label>
+    <div class="col-sm-10">
+      <input name="sequence" type="text" class="form-control" id="sequence" placeholder="1"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="organizer" class="col-sm-2 col-form-label">Organizer email</label>
+    <div class="col-sm-10">
+      <input name="organizer" type="email" class="form-control" id="organizer" placeholder="rose@example.com"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="impact" class="col-sm-2 col-form-label">Impact</label>
+    <div class="col-sm-10">
+      <select name="impact" class="custom-select mb-2 mr-sm-2 mb-sm-0" id="impact">
+        <option selected>Choose...</option>
+        <option value="NO-IMPACT">No Impact</option>
+        <option value="REDUCED-REDUNDANCY">Reduced redundancy</option>
+        <option value="DEGRADED">Degraded</option>
+        <option value="OUTAGE">Outage</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="status" class="col-sm-2 col-form-label">Status</label>
+    <div class="col-sm-10">
+      <select name="status" class="custom-select mb-2 mr-sm-2 mb-sm-0" id="status">
+        <option selected>Choose...</option>
+        <option value="TENTATIVE">Tentative</option>
+        <option value="CANCELLED">Cancelled</option>
+        <option value="IN-PROCESS">In process</option>
+        <option value="COMPLETED">Completed</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="start" class="col-sm-2 col-form-label">Start time</label>
+    <div class="col-sm-10">
+      <input name="start" id="start" type="datetime-local"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="end" class="col-sm-2 col-form-label">End time</label>
+    <div class="col-sm-10">
+      <input name="end" id="end" type="datetime-local"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="maintobject">Maintenance Objects (at least one)</label><br>
+    Input one or more maintenance objects as Name, Data (name, then comma, then data).<br>
+    <textarea name="maintobject" class="form-control" id="maintobject" rows="3"></textarea>
+  </div>
+  <input type="submit" value="generate">
+</form>
+</p>
+{{ end }}
