@@ -1,0 +1,47 @@
+{{ define "title"}}Parse xmaintnote file{{ end }}
+{{ define "content" }}
+<h1>Parse a xmaintnote file</h1>
+<p>Upload a xmaintnote-compatible ical file to continue.<br>
+<form method="POST" enctype="multipart/form-data">
+  <div class="form-group">
+    <input name="fname" type="file" />     <input type="submit" value="parse" />
+  </div>
+</form>
+</p>
+{{ if .Error }}
+<div class="alert alert-danger" role="alert">
+<h4 class="alert-heading">Parse Error</h4>
+{{ .Error }}
+</div>
+{{ end }}
+{{ if .Maint }}
+<hr>
+{{range .Maint.Events}}
+<h3>Event</h3>
+<p>
+<table class="table">
+<tr><th>Summary</th><td>{{.Summary}}</td></tr>
+<tr><th>Provider</th><td>{{.Provider}}</td></tr>
+<tr><th>Account</th><td>{{.Account}}</td></tr>
+<tr><th>Maintenance ID</th><td>{{.MaintenanceID}}</td></tr>
+<tr><th>Sequence</th><td>{{.Sequence}}</td></tr>
+<tr><th>Organizer Email</th><td>{{.OrganizerEmail}}</td></tr>
+<tr><th>Impact</th><td>{{.Impact}}</td></tr>
+<tr><th>Status</th><td>{{.Status}}</td></tr>
+<tr><th>Created</th><td>{{.Created}}</td></tr>
+<tr><th>Start</th><td>{{.Start}}</td></tr>
+<tr><th>End</th><td>{{.End}}</td></tr>
+<tr><td colspan="2">
+<h4>Maintenance Objects</h4>
+{{range .Objects}}
+<table class="table">
+<tr><th>Name</th><td>{{.Name}}</td></tr>
+<tr><th>Data</th><td>{{.Data}}</td></tr>
+</table>
+{{end}}
+</td></tr>
+</table>
+</p>
+{{ end }}
+{{ end }}
+{{ end }}
